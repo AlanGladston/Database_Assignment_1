@@ -1,0 +1,4 @@
+INDEX VERSION 1.134+D:\Downloads\litmus_java\.metadata\.plugins\org.eclipse.jdt.core
+1865797976.index
+2117424561.index
+1312727850.index

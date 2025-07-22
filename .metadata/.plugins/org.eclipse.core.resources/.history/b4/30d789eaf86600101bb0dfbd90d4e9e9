@@ -1,0 +1,97 @@
+package com.employeemanager.controller;
+
+import com.employeemanager.model.Employee;
+import com.employeemanager.model.Response;
+import com.employeemanager.util.DBConnection;
+import com.employeemanager.util.Validator;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class EmployeeManagerController {
+
+	public List<Employee> readCSV(String filename) {
+	    List<Employee> employeeList = new ArrayList<>();
+	    try (InputStream is = getClass().getClassLoader().getResourceAsStream(filename)) {
+	        if (is == null) {
+	            System.out.println("File not found: " + filename);
+	            return employeeList; // return empty list or handle as needed
+	        }
+	        try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+	            String line = br.readLine(); // Read header line (if any)
+	            while ((line = br.readLine()) != null) {
+	                String[] tokens = line.split(",");
+	                if (tokens.length != 8) {
+	                    System.out.println("Skipping invalid row: " + line);
+	                    continue;
+	                }
+
+                Employee emp = new Employee();
+                emp.setEmpId(tokens[0].trim());
+                emp.setFirstName(tokens[1].trim());
+                emp.setLastName(tokens[2].trim());
+                emp.setEmail(tokens[3].trim());
+                emp.setPhone(tokens[4].trim());
+                emp.setDepartment(tokens[5].trim());
+                emp.setSalary(tokens[6].trim());
+                emp.setJoinDate(tokens[7].trim());
+
+                if (!Validator.validateEmployee(emp)) {
+                    System.out.println("Validation failed for: " + emp.getEmpId());
+                    continue;
+                }
+
+                employeeList.add(emp);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return employeeList;
+    }
+
+    public Connection getConnection() throws SQLException {
+        return DBConnection.getConnection();
+    }
+
+    public Response writeToDB(Employee emp) {
+        String query = "INSERT INTO employee (emp_id, first_name, last_name, email, phone, department, salary, join_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, Integer.parseInt(emp.getEmpId()));
+            stmt.setString(2, emp.getFirstName());
+            stmt.setString(3, emp.getLastName());
+            stmt.setString(4, emp.getEmail());
+            stmt.setString(5, emp.getPhone());
+            stmt.setString(6, emp.getDepartment());
+            stmt.setDouble(7, Double.parseDouble(emp.getSalary()));
+            stmt.setDate(8, java.sql.Date.valueOf(emp.getJoinDate()));
+
+            stmt.executeUpdate();
+            return new Response(200, "Inserted employee " + emp.getEmpId());
+
+        } catch (SQLIntegrityConstraintViolationException e) {
+            return new Response(409, "Employee ID " + emp.getEmpId() + " already exists.");
+        } catch (Exception e) {
+            return new Response(500, "Error inserting employee " + emp.getEmpId() + ": " + e.getMessage());
+        }
+    }
+
+    public void writeDataToDB(String filename) {
+        List<Employee> employeeList = readCSV(filename);
+        for (Employee emp : employeeList) {
+            Response res = writeToDB(emp);
+            System.out.println(res);
+        }
+    }
+}
