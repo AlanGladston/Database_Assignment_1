@@ -1,0 +1,42 @@
+package retail_store_inventory_management.com.litmus7.managementApp.service;
+
+import java.util.Comparator;
+import java.util.List;
+
+import retail_store_inventory_management.com.litmus7.managementApp.dto.Product;
+import retail_store_inventory_management.com.litmus7.managementApp.dto.Response;
+import retail_store_inventory_management.com.litmus7.managementApp.exception.ProductServiceException;
+
+public class ProductServiceImpl implements ProductService {
+
+	@Override
+	public Response<Product> addProduct(Product product) throws ProductServiceException{
+		
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public  Response<List<Product>> getAllProducts() throws ProductServiceException{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public  Response<List<Product>> getProductsByCategory(String category) throws ProductServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public  Response<List<Product>> sortProducts(Comparator<Product> comparator) throws ProductServiceException {
+		try {
+	        List<Product> products = productDAO.findAll(); // fetch all products
+	        products.sort(comparator);                     // sort using Comparator
+	        return new Response<>(200, products);          // wrap result in Response
+	    } catch(Exception e) {
+	        return new Response<>(500, "Failed to sort products: " + e.getMessage(), null);
+	    }
+	}
+
+}

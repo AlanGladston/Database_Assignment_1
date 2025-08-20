@@ -1,0 +1,11 @@
+package retail_store_inventory_management.com.litmus7.managementApp.dto;
+
+import java.sql.Date;
+
+public class Grocery extends Product{
+	private Date expiryDate;
+    private double weightKg;
+
+	
+	
+}

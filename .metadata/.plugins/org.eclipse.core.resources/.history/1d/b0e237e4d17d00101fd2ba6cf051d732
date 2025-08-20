@@ -1,0 +1,42 @@
+package retail_store_inventory_management.com.litmus7.managementApp.ui;
+
+import retail_store_inventory_management.com.litmus7.managementApp.controller.ProductController;
+import retail_store_inventory_management.com.litmus7.managementApp.dao.ProductDAOImpl;
+import retail_store_inventory_management.com.litmus7.managementApp.dto.Electronics;
+import retail_store_inventory_management.com.litmus7.managementApp.dto.Product;
+import retail_store_inventory_management.com.litmus7.managementApp.dto.Response;
+import retail_store_inventory_management.com.litmus7.managementApp.service.ProductServiceImpl;
+import retail_store_inventory_management.com.litmus7.managementApp.service.ProductService;
+
+public class RetailStoreManagementApp {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		 // 1. Create DAO
+        ProductDAOImpl productDAO = new ProductDAOImpl();
+
+        // 2. Create Service with DAO
+        ProductService productService = new ProductServiceImpl(productDAO);
+
+        // 3. Create Controller with Service
+        ProductController controller = new ProductController(productService);
+
+        // 4. Add some products
+        Product laptop = new Electronics(1, "Laptop", 55000.0, "AVAILABLE","Electronics","Dell", 24);
+        Product phone = new Electronics(2, "Smartphone", 12000.0, "COMING_SOON","Electronics","Samsung", 24);
+
+        Response<Product> response1 = controller.addProduct(laptop);
+        System.out.println("Status: " + response1.getStatusCode() + " - " + response1.getErrorMessage());
+
+        Response<Product> response2 = controller.addProduct(phone);
+        System.out.println("Status: " + response2.getStatusCode() + " - " + response2.getErrorMessage());
+
+        // 5. View all products
+        Response<List<Product>> allProducts = controller.viewAllProducts();
+        System.out.println("Status: " + allProducts.getStatusCode() + " - " + allProducts.getErrorMessage());
+        allProducts.getData().forEach(System.out::println);
+    }
+
+	}
+
+}

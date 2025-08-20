@@ -1,0 +1,31 @@
+package retail_store_inventory_management.com.litmus7.managementApp.dto;
+
+public class Electronics extends Product{
+	
+	private String brand;
+	private int warrantyMonths;
+	
+	public Electronics(int productId,String productName,String category,String status,double price,String brand
+			,int warrantyMonths) {
+		 super(productId, productName, price, status ,category);
+		 this.brand = brand;
+		 this.warrantyMonths = warrantyMonths;
+		
+	}
+	
+	public String getBrand() {
+		return brand;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+
+	public int getWarrantyMonths() {
+		return warrantyMonths;
+	}
+
+	public void setWarrantyMonths(int warrantyMonths) {
+		this.warrantyMonths = warrantyMonths;
+	}
+}

@@ -1,0 +1,90 @@
+package retail_store_inventory_management.com.litmus7.managementApp.dao;
+
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+
+import retail_store_inventory_management.com.litmus7.managementApp.dto.Product;
+import retail_store_inventory_management.com.litmus7.managementApp.util.CsvReader;
+import retail_store_inventory_management.com.litmus7.managementApp.dto.Clothing;
+import retail_store_inventory_management.com.litmus7.managementApp.dto.Electronics;
+import retail_store_inventory_management.com.litmus7.managementApp.dto.Grocery;
+import retail_store_inventory_management.com.litmus7.managementApp.exception.ProductDaoException;
+
+
+
+public class ProductDAOImpl implements ProductDAO{
+
+	private static final String FILE_PATH = "/retail_store_inventory_management/resources/products.csv";
+	
+	
+	@Override
+	public void save(Product product) throws ProductDaoException {
+		// TODO Auto-generated method stub
+		List<Product> products = new ArrayList<>();
+		List<String[]> rows = CsvReader.readCsv(FILE_PATH);
+		for(String[] row : rows) {
+			String category = row[2].trim();
+			switch(category.toLowerCase()) {
+				
+			case "electronics":
+				Product electronics = new Electronics(
+						Integer.parseInt(row[0].trim()),
+						row[1].trim(),
+						Double.parseDouble(row[4].trim()),
+						row[3].trim(),
+						category,
+						row[5].trim(),
+						Integer.parseInt(row[6].trim())
+						);
+				products.add(electronics);
+				break;
+			
+			case "clothing" :
+				Product clothing = new Clothing(
+						Integer.parseInt(row[0].trim()),
+						row[1].trim(),
+						Double.parseDouble(row[4].trim()),
+						row[3].trim(),
+						category,
+						row[5].trim(),
+						row[6].trim()
+						);
+				products.add(clothing);
+				break;
+				
+			case "grocery":
+				Product grocery = new Grocery(
+						Integer.parseInt(row[0].trim()),
+						row[1].trim(),
+						Double.parseDouble(row[4].trim()),
+						row[3].trim(),
+						category,
+						Date.valueOf(row[5].trim()),
+						Double.parseDouble(row[6].trim())
+						);
+				products.add(grocery);
+				break;
+				
+				
+			default:
+                System.out.println("Unknown category: " + category);
+				
+			}
+		}
+		
+	}
+
+	@Override
+	public List<Product> findAll() throws ProductDaoException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Product> findByCategory(String category) throws ProductDaoException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

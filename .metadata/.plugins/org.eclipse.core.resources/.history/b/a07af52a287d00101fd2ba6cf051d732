@@ -1,0 +1,5 @@
+package retail_store_inventory_management.com.litmus7.managementApp.controller;
+
+public class ProductController {
+
+}

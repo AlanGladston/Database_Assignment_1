@@ -1,0 +1,27 @@
+package retail_store_inventory_management.com.litmus7.managementApp.ui;
+
+import retail_store_inventory_management.com.litmus7.managementApp.controller.ProductController;
+import retail_store_inventory_management.com.litmus7.managementApp.dao.ProductDAOImpl;
+import retail_store_inventory_management.com.litmus7.managementApp.dto.Electronics;
+import retail_store_inventory_management.com.litmus7.managementApp.dto.Product;
+import retail_store_inventory_management.com.litmus7.managementApp.service.ProductServiceImpl;
+import retail_store_inventory_management.com.litmus7.managementApp.service.ProductService;
+
+public class RetailStoreManagementApp {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		//Create DAO
+		ProductDAOImpl productDAO = new ProductDAOImpl();
+		//Create Service
+		ProductService productService = new ProductServiceImpl();
+		//Create Controller
+		ProductController controller = new ProductController(productService);
+		 // 4. Add some products (simulating CSV or user input)
+        Product laptop = new Electronics(1, "Laptop", 55000.0, "AVAILABLE","Electronics","Dell", 24);
+        Product phone =  new Electronics(1, "Smartphone", 12000.0, "COMMING_SOON","Electronics","Samsung", 24);
+		
+
+	}
+
+}

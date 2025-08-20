@@ -1,0 +1,17 @@
+package retail_store_inventory_management.com.litmus7.managementApp.dto;
+
+public abstract class Product {
+	private int productId;
+	private String productName;
+	private double price;
+	private String status;
+	private String category;
+	public Product(int productId, String productName, double price, String status, String category) {
+		this.productId = productId;
+		this.productName = productName;
+		this.price = price;
+		this.status = status;
+		this.category = category;
+	}
+	
+}

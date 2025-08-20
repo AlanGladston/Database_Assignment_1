@@ -1,0 +1,12 @@
+package retail_store_inventory_management.com.litmus7.managementApp.service;
+
+import java.util.List;
+
+import retail_store_inventory_management.com.litmus7.managementApp.dto.Product;
+
+public interface ProductService {
+	void addProduct(Product product);
+	List<Product> getAllProducts();
+	List<Product> getProductsByCategory(String category);
+	List<Product> sortProducts(List<Product> products, String criteria);
+}
