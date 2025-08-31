@@ -34,28 +34,19 @@ public class AppPhase1 {
                 paths.forEach(file -> {
                     try {
                         if (Files.isDirectory(file)) {
+                           
                             log.warn("Skipping directory: {}", file.toAbsolutePath());
                             return;
                         }
 
                         if (!file.toString().toLowerCase().endsWith(".csv")) {
+                            // Skip non-CSV files
                             log.warn("Skipping non-CSV file: {}", file.toAbsolutePath());
                             return;
                         }
 
-                        //New thread per file
-                        Thread t = new Thread(() -> {
-                            try {
-                                log.info("Started processing in thread: {} for file: {}", 
-                                         Thread.currentThread().getName(), file.getFileName());
-                                controller.handleFile(file, processed, error);
-                                log.info("Finished processing file: {}", file.getFileName());
-                            } catch (Exception e) {
-                                log.error("Thread error for file {}: {}", file.getFileName(), e.getMessage(), e);
-                            }
-                        });
-
-                        t.start();
+                        log.info("Processing file: {}", file.getFileName());
+                        controller.handleFile(file, processed, error);
 
                     } catch (Exception e) {
                         log.error("Unexpected error with {}: {}", file.getFileName(), e.getMessage(), e);
@@ -68,3 +59,4 @@ public class AppPhase1 {
         }
     }
 }
+s
